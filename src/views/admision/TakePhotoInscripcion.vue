@@ -13,10 +13,7 @@
         </div>
 
         <div class="flex items-center justify-center py-4">
-            <button @click="TakePicture" class="
-px-6 py-4bg-green-500 rounded
-text-white text-2x1 uppercase font-bold
-hover:bg-green-600">Take Picture</button>
+            <button @click="TakePicture">Take Picture</button>
 
         </div>
     </div>
@@ -24,7 +21,7 @@ hover:bg-green-600">Take Picture</button>
 
 <script setup>
 import { useAdmisionStore } from '../../stores/useAdmisionStore';
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
 
 const canvas = ref(null)
 const video = ref(null)
@@ -69,23 +66,24 @@ function TakePicture() {
 }
 
 const validateDNI = () => {
-  // Regex para 8 dígitos numéricos (DNI Perú)
-  const dniRegex = /^[0-9]{8}$/
-  isValid.value = dniRegex.test(dni.value)
+    // Regex para 8 dígitos numéricos (DNI Perú)
+    const dniRegex = /^[0-9]{8}$/
+    isValid.value = dniRegex.test(dni.value)
 }
 
 </script>
 
 <style scoped>
 .dni-validator {
-  max-width: 300px;
-  margin: 20px auto;
-  font-family: sans-serif;
+    max-width: 300px;
+    margin: 20px auto;
+    font-family: sans-serif;
 }
+
 input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
 }
 </style>
