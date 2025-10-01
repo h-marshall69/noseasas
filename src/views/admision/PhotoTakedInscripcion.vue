@@ -1,18 +1,13 @@
 <template>
 	<div>
-		<img src="/user_blank.jpg" alt="Imagen 1" class="imagen" />
+		<img src="/user_blank.jpg" alt="Imagen 1" />
 		<p>Foto Tomada</p>
 
-		<img src="/user_blank.jpg" alt="Imagen 2" class="imagen" />
+		<img src="/user_blank.jpg" alt="Imagen 2" />
 		<p>Foto Guardada</p>
 	</div>
 </template>
 <script setup>
 </script>
 <style scoped>
-.imagen {
-  width: 300px;
-  height: auto;
-  margin-bottom: 1rem;
-}
 </style>

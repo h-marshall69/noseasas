@@ -1,9 +1,10 @@
 <template>
     <div style="height: 100%; border: 1px solid #ccc;">
+        
         <Splitter style="height: 100%">
-
             <SplitterPanel :size="40" :minSize="30" class="flex align-items-center justify-content-center">
-                <TakePhotoInscripcion />
+                <!-- <TakePhotoInscripcion /> -->
+                <Nose />
             </SplitterPanel>
 
             <SplitterPanel :size="60" :minSize="40" class="flex align-items-center justify-content-center">
@@ -11,7 +12,7 @@
             </SplitterPanel>
 
             <UserInformation />
-            <Nose />
+            
 
         </Splitter>
     </div>
