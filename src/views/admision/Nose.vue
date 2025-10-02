@@ -10,14 +10,16 @@
         </option>
       </select>
       <input v-model="dni" placeholder="DNI Ej. 12345678" />
-      <button @click="takePicture">Take Picture</button>
+      <button @click="uploadPhoto">Take Picture</button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import axios from "axios";
 import { useAdmisionStore } from '../../stores/useAdmisionStore';
+import { makeFormData } from '../../abadeer_truco/utilities/FormDataMaker';
 
 const loading = ref(true)
 const videoDevices = ref([])
@@ -47,10 +49,33 @@ const startCamera = async () => {
   videoElement.value.srcObject = stream
 }
 
-
 onMounted(() => {
   getCameras()
 })
+
+const props = defineProps({
+  imageSrc: { type: String, required: true },
+  dni: { type: String, required: true }
+});
+
+const uploadPhoto = async () => {
+  try {
+    const formData = makeFormData({
+      imageString: props.imageSrc,
+      dni: props.dni,
+      codes: ["00000000-0000-0000-0000-000000000000"]
+    });
+
+    const response = await axios.post("http://localhost:8000/api/tomar_fotos", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
+
+    console.log("Respuesta del servidor:", response.data);
+  } catch (error) {
+    console.error("Error al subir la foto:", error);
+  }
+};
+
 </script>
 
 <style scoped></style>
