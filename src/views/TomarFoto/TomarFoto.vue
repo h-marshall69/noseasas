@@ -6,6 +6,7 @@
             <!-- <SplitterPanel :size="50" :minSize="40" class="flex align-items-center justify-content-center"> -->
                 <!-- <TakePhotoInscripcion /> -->
                 <!-- <Nose /> -->
+                <!-- <Test /> -->
                 <NavigatorInAdmision/>
                  
             <!-- </SplitterPanel> -->
@@ -30,6 +31,7 @@ import NavigatorInAdmision from '../admision/NavigatorInAdmision.vue'
 import TakePhotoInscripcion from '../admision/TakePhotoInscripcion.vue';
 import PhotoTakedInscripcion from '../admision/PhotoTakedInscripcion.vue';
 import UserInformation from '../admision/UserInformation.vue';
+import Test from '../admision/Test.vue';
 </script>
 
 <style scoped>

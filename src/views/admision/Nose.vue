@@ -1,7 +1,5 @@
 <template>
   <div>
-    <div v-if="loading">Cargando cámaras...</div>
-    <div v-else>
       <label>Toma de Fotos</label>
       <video ref="videoElement" autoplay playsinline></video>
       <select v-model="selectedCamera" @change="startCamera">
@@ -11,7 +9,6 @@
       </select>
       <input v-model="dni" placeholder="DNI Ej. 12345678" />
       <button @click="uploadPhoto">Take Picture</button>
-    </div>
   </div>
 </template>
 
@@ -49,8 +46,8 @@ const startCamera = async () => {
   videoElement.value.srcObject = stream
 }
 
-onMounted(() => {
-  getCameras()
+onMounted(async () => {
+  await getCameras()
 })
 
 const props = defineProps({
