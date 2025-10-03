@@ -29,6 +29,9 @@ const dni = ref("")
 // });
 
 const handleFileUpload = async (event) => {
+    const file = event.target.files[0]
+    if (!file) return
+
     if (file.type !== "image/jpeg") {
         errorMessage.value = "Solo se permiten imágenes JPG";
         return;
@@ -38,9 +41,6 @@ const handleFileUpload = async (event) => {
         errorMessage.value = "El DNI debe tener 8 dígitos";
         return;
     }
-
-    const file = event.target.files[0]
-    if (!file) return
 
     const reader = new FileReader()
     reader.onload = () => {

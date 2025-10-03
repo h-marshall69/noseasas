@@ -1,79 +1,68 @@
 <template>
     <header>
-        <Menubar :model="items">
-            <template #start>
-            </template>
-        </Menubar>
+        <nav>
+            <button @click="handleNavigation('AdministratorPage')"
+                :class="{ active: currentComponent === 'AdministratorPage' }">
+                Ir Administrador
+            </button>
+            <button @click="handleNavigation('AdmisionPage')" 
+                :class="{ active: currentComponent === 'AdmisionPage' }">
+                Ir Admision
+            </button>
+            <button @click="handleNavigation('Nose')" 
+                :class="{ active: currentComponent === 'Nose' }">
+                Ir Nose
+            </button>
+            <button @click="handleNavigation('Test')" 
+                :class="{ active: currentComponent === 'Test' }">
+                Ir Test
+            </button>
+        </nav>
     </header>
 
     <main>
-        <component :is="currentComponent" />
+        <component :is="components[currentComponent]" />
     </main>
 </template>
 
 <script>
 import { ref } from 'vue'
-// 1. Importar el componente Menubar
-import Menubar from 'primevue/menubar';
+import AdmisionPage from './AdmisionPage.vue';
+import AdministratorPage from '../administrador/AdministratorPage.vue';
 
-// Importa tus componentes de vista
 import Nose from './Nose.vue';
-import TakePhotoInscripcion from './TakePhotoInscripcion.vue';
-import PhotoTakedInscripcion from './PhotoTakedInscripcion.vue';
+import Test from './Test.vue';
 
 export default {
-    name: 'App',
-    components: {
-        // 2. Registrar el componente de PrimeVue
-        Menubar, 
-        PhotoTakedInscripcion,
-        // TakePhotoInscripcion,
-        Nose,
-    },
     setup() {
-        // Definimos currentComponent para cambiar la vista. 
-        // Inicializa en 'Nose'.
-        const currentComponent = ref('Nose');
+        const currentComponent = ref('AdministratorPage')
 
-        // Función auxiliar para cambiar el componente
+        const components = {
+            AdministratorPage,
+            AdmisionPage,
+            Nose,
+            Test,
+        };
+
         const handleNavigation = (componentName) => {
             currentComponent.value = componentName;
-        };
-        
-        // 3. Definición de los ítems para el Menubar de PrimeVue
-        const items = ref([
-            {
-                label: 'Ir a Tomar Foto',
-                icon: 'pi pi-camera', // Requiere PrimeIcons
-                command: () => {
-                    handleNavigation('Nose');
-                }
-            },
-            {
-                label: 'Ir a Verificación',
-                icon: 'pi pi-check-circle', // Requiere PrimeIcons
-                command: () => {
-                    handleNavigation('PhotoTakedInscripcion');
-                }
-            }
-        ]);
+        }
 
         return {
             currentComponent,
-            items, // Exponemos los ítems para el Menubar
+            components,
             handleNavigation
         }
-    },
-
-    data() {
-        return {
-            // Este data es ignorado si 'currentComponent' se inicializa en setup()
-            
-        };
     },
 }
 </script>
 
 <style scoped>
-/* Estilos opcionales */
+
+.active {
+    /* Add your active button styles here */
+    background-color: #007bff;
+    color: white;
+}
+
 </style>

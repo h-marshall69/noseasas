@@ -8,7 +8,10 @@
         </option>
       </select>
       <input v-model="dni" placeholder="DNI Ej. 12345678" />
-      <button @click="uploadPhoto">Take Picture</button>
+      <button @click="uploadPhoto" class="styled-button">
+        <i class="pi pi-camera"></i>
+        Take Picture
+      </button>
   </div>
 </template>
 
@@ -72,7 +75,32 @@ const uploadPhoto = async () => {
     console.error("Error al subir la foto:", error);
   }
 };
-
 </script>
 
-<style scoped></style>
+<style scoped>
+.styled-button {
+  background: var(--primary-500);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.styled-button:hover {
+  background: var(--primary-600);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.styled-button:active {
+  transform: translateY(0);
+}
+</style>
