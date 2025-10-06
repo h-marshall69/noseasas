@@ -17,6 +17,10 @@
                 :class="{ active: currentComponent === 'Test' }">
                 Ir Test
             </button>
+            <!-- <button @click="handleNavigation('MiComponente')" 
+                :class="{ active: currentComponent === 'MiComponente' }">
+                Ir MiComponente
+            </button> -->
         </nav>
     </header>
 
@@ -32,16 +36,19 @@ import AdministratorPage from '../administrador/AdministratorPage.vue';
 
 import Nose from './Nose.vue';
 import Test from './Test.vue';
+import MiComponente from './MiComponente.vue';
 
 export default {
     setup() {
-        const currentComponent = ref('AdministratorPage')
+        // const currentComponent = ref('AdministratorPage')
+        const currentComponent = ref('AdmisionPage')
 
         const components = {
             AdministratorPage,
             AdmisionPage,
             Nose,
             Test,
+            MiComponente
         };
 
         const handleNavigation = (componentName) => {

@@ -1,18 +1,38 @@
 <template>
-  <div>
-      <label>Toma de Fotos</label>
-      <video ref="videoElement" autoplay playsinline></video>
-      <select v-model="selectedCamera" @change="startCamera">
-        <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
-          {{ device.label || 'Cámara ' + device.deviceId }}
-        </option>
-      </select>
-      <input v-model="dni" placeholder="DNI Ej. 12345678" />
-      <button @click="uploadPhoto" class="styled-button">
-        <i class="pi pi-camera"></i>
-        Take Picture
-      </button>
-  </div>
+    <div>
+        <label>Toma de Fotos</label>
+        <video ref="videoElement" autoplay playsinline></video>
+        <select v-model="selectedCamera" @change="startCamera">
+            <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
+                {{ device.label || 'Cámara ' + device.deviceId }}
+            </option>
+        </select>
+
+        <div class="dni-container">
+            <label for="dni" class="dni-label">Ingrese su DNI:</label>
+            <input id="dni" v-model="dni" @input="validateDNI" type="text" maxlength="8" placeholder="Ej. 12345678"
+                class="dni-input" />
+            <div class="validation-message" v-if="dni.length > 0">
+                <span v-if="isValid" class="valid">✅ DNI válido</span>
+                <span v-else class="invalid">❌ DNI debe tener 8 dígitos</span>
+            </div>
+        </div>
+
+        <div>
+            <button v-if="!stream" @click="requestCameraPermission" :disabled="loading">
+                {{ loading ? 'Solicitando...' : 'Activar Cámara' }}
+            </button>
+
+            <button v-else @click="uploadPhoto" :disabled="!isValid" class="styled-button">
+                <i class="pi pi-camera"></i>
+                Take Picture
+            </button>
+        </div>
+
+        <div v-if="error" class="error">
+            Error: {{ error }}
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -21,86 +41,134 @@ import axios from "axios";
 import { useAdmisionStore } from '../../stores/useAdmisionStore';
 import { makeFormData } from '../../abadeer_truco/utilities/FormDataMaker';
 
-const loading = ref(true)
+const loading = ref(false)
 const videoDevices = ref([])
+const stream = ref(null)
 const selectedCamera = ref(null)
 const videoElement = ref(null)
 const dni = ref("")
+const error = ref('')
+const permissionStatus = ref('')
+
+const capturedImage = ref(null)
+
+const isValid = ref(false)
+function validateDNI() {
+    dni.value = dni.value.replace(/\D/g, '').slice(0, 8)
+    isValid.value = /^[0-9]{8}$/.test(dni.value)
+}
+
+const requestCameraPermission = async () => {
+    loading.value = true
+    error.value = ''
+
+    try {
+        stream.value = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        })
+
+        // Mostrar el video en el elemento
+        if (videoElement.value) {
+            videoElement.value.srcObject = stream.value
+        }
+        permissionStatus.value = 'concedido'
+        await getCameras()
+    } catch (err) {
+        console.error('Error al acceder a la cámara:', err)
+        error.value = err.message
+        permissionStatus.value = 'denegado'
+
+        // Manejar diferentes tipos de errores
+        if (err.name === 'NotAllowedError') {
+            error.value = 'Permiso de cámara denegado por el usuario'
+        } else if (err.name === 'NotFoundError') {
+            error.value = 'No se encontró ninguna cámara'
+        } else if (err.name === 'NotSupportedError') {
+            error.value = 'El navegador no soporta acceso a cámara'
+        }
+    }
+    finally {
+        loading.value = false
+    }
+}
 
 const getCameras = async () => {
-  const devices = await navigator.mediaDevices.enumerateDevices()
-  videoDevices.value = devices.filter(device => device.kind === 'videoinput')
-  if (videoDevices.value.length > 0) {
-    selectedCamera.value = videoDevices.value[0].deviceId
-    startCamera()
-  }
-  loading.value = false
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    videoDevices.value = devices.filter(device => device.kind === 'videoinput')
+    if (videoDevices.value.length > 0) {
+        selectedCamera.value = videoDevices.value[0].deviceId
+        startCamera()
+    }
+    loading.value = false
 }
 
 const startCamera = async () => {
-  if (!selectedCamera.value) return
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: {
-      deviceId: selectedCamera.value,
-      width: { min: 1280, ideal: 1920 },
-      height: { min: 720, ideal: 1080 }
+    if (!selectedCamera.value) return
+    if (stream.value) {
+        stream.value.getTracks().forEach(track => track.stop())
     }
-  })
-  videoElement.value.srcObject = stream
+    const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+            deviceId: selectedCamera.value,
+            width: { min: 1280, ideal: 1920 },
+            height: { min: 720, ideal: 1080 }
+        }
+    })
+    videoElement.value.srcObject = stream
 }
 
+const capturePhoto = () => {
+    if (!videoElement.value || videoElement.value.readyState !== 4) {
+        error.value = 'La cámara no está lista'
+        return false
+    }
+
+    const canvas = document.createElement('canvas')
+    canvas.width = videoElement.value.videoWidth
+    canvas.height = videoElement.value.videoHeight
+    canvas.getContext('2d').drawImage(videoElement.value, 0, 0)
+    capturedImage.value = canvas.toDataURL('image/jpeg')
+}
+
+
 onMounted(async () => {
-  await getCameras()
+    await requestCameraPermission()
 })
 
-const props = defineProps({
-  imageSrc: { type: String, required: true },
-  dni: { type: String, required: true }
-});
-
 const uploadPhoto = async () => {
-  try {
-    const formData = makeFormData({
-      imageString: props.imageSrc,
-      dni: props.dni,
-      codes: ["00000000-0000-0000-0000-000000000000"]
-    });
+    if (!isValid.value) {
+        error.value = 'Debe ingresar un DNI válido de 8 dígitos'
+        return
+    }
 
-    const response = await axios.post("http://localhost:8000/api/tomar_fotos", formData, {
-      headers: { "Content-Type": "multipart/form-data" }
-    });
+    if (!capturedImage.value) {
+        capturePhoto()
+    }
 
-    console.log("Respuesta del servidor:", response.data);
-  } catch (error) {
-    console.error("Error al subir la foto:", error);
-  }
+    loading.value = true
+    error.value = ''
+
+    try {
+        const formData = makeFormData({
+            imageString: capturedImage.value,
+            dni: dni.value,
+            codes: ["00000000-0000-0000-0000-000000000000"]
+        });
+
+        const response = await axios.post("http://localhost:8000/api/tomar_fotos", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        });
+
+        console.log("Respuesta del servidor:", response.data);
+        capturedImage.value = null
+    } catch (error) {
+        console.error("Error al subir la foto:", error);
+        error.value = 'Error al subir la foto: ' + err.message
+    } finally {
+        loading.value = false
+    }
 };
 </script>
 
-<style scoped>
-.styled-button {
-  background: var(--primary-500);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.styled-button:hover {
-  background: var(--primary-600);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.styled-button:active {
-  transform: translateY(0);
-}
-</style>
+<style scoped></style>
