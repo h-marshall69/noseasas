@@ -13,17 +13,13 @@
             <input id="dni" v-model="dni" @input="validateDNI" type="text" maxlength="8" placeholder="Ej. 12345678"
                 class="dni-input" />
             <div class="validation-message" v-if="dni.length > 0">
-                <span v-if="isValid" class="valid">✅ DNI válido</span>
-                <span v-else class="invalid">❌ DNI debe tener 8 dígitos</span>
+                <span v-if="isValid" class="valid">DNI válido</span>
+                <span v-else class="invalid">DNI debe tener 8 dígitos</span>
             </div>
         </div>
 
         <div>
-            <button v-if="!stream" @click="requestCameraPermission" :disabled="loading">
-                {{ loading ? 'Solicitando...' : 'Activar Cámara' }}
-            </button>
-
-            <button v-else @click="uploadPhoto" :disabled="!isValid" class="styled-button">
+            <button @click="uploadPhoto" :disabled="!isValid" class="styled-button">
                 <i class="pi pi-camera"></i>
                 Take Picture
             </button>
@@ -58,22 +54,18 @@ function validateDNI() {
     isValid.value = /^[0-9]{8}$/.test(dni.value)
 }
 
-const requestCameraPermission = async () => {
+const startCamera = async () => {
     loading.value = true
     error.value = ''
-
     try {
-        stream.value = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: false
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                deviceId: selectedCamera.value,
+                width: { min: 1280, ideal: 1920 },
+                height: { min: 720, ideal: 1080 }
+            }
         })
-
-        // Mostrar el video en el elemento
-        if (videoElement.value) {
-            videoElement.value.srcObject = stream.value
-        }
-        permissionStatus.value = 'concedido'
-        await getCameras()
+        videoElement.value.srcObject = stream
     } catch (err) {
         console.error('Error al acceder a la cámara:', err)
         error.value = err.message
@@ -93,31 +85,6 @@ const requestCameraPermission = async () => {
     }
 }
 
-const getCameras = async () => {
-    const devices = await navigator.mediaDevices.enumerateDevices()
-    videoDevices.value = devices.filter(device => device.kind === 'videoinput')
-    if (videoDevices.value.length > 0) {
-        selectedCamera.value = videoDevices.value[0].deviceId
-        startCamera()
-    }
-    loading.value = false
-}
-
-const startCamera = async () => {
-    if (!selectedCamera.value) return
-    if (stream.value) {
-        stream.value.getTracks().forEach(track => track.stop())
-    }
-    const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-            deviceId: selectedCamera.value,
-            width: { min: 1280, ideal: 1920 },
-            height: { min: 720, ideal: 1080 }
-        }
-    })
-    videoElement.value.srcObject = stream
-}
-
 const capturePhoto = () => {
     if (!videoElement.value || videoElement.value.readyState !== 4) {
         error.value = 'La cámara no está lista'
@@ -133,7 +100,8 @@ const capturePhoto = () => {
 
 
 onMounted(async () => {
-    await requestCameraPermission()
+    // await getCameras()
+    await startCamera()
 })
 
 const uploadPhoto = async () => {
