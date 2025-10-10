@@ -24,15 +24,8 @@
 </template>
 
 <script setup>
-import Splitter from 'primevue/splitter';
-import SplitterPanel from 'primevue/splitterpanel';
 
-import Nose from '../admision/Nose.vue';
 import NavigatorInAdmision from '../admision/NavigatorInAdmision.vue'
-import TakePhotoInscripcion from '../admision/TakePhotoInscripcion.vue';
-import PhotoTakedInscripcion from '../admision/PhotoTakedInscripcion.vue';
-import UserInformation from '../admision/UserInformation.vue';
-import Test from '../admision/Test.vue';
 </script>
 
 <style scoped>

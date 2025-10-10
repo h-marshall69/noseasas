@@ -1,14 +1,6 @@
 <template>
 	<div class="flex gap-3 justify-content-center">
-		<!-- Foto Tomada -->
-		<div class="flex flex-column align-items-center">
-			<img 
-				src="/user_blank.jpg" 
-				alt="Imagen 1" 
-				class="small-photo border-round"
-			/>
-			<p class="mt-2 mb-0 text-sm">Foto Tomada</p>
-		</div>
+		
 
 		<!-- Foto Guardada -->
 		<div class="flex flex-column align-items-center">
