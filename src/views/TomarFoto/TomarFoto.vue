@@ -1,37 +1,50 @@
 <template>
-    <div style="height: 100%; border: 1px solid #ccc;">
-        
-        <!-- <Splitter style="height: 100%"> -->
-            <!-- <NavigatorInAdmision/> -->
-            <!-- <SplitterPanel :size="50" :minSize="40" class="flex align-items-center justify-content-center"> -->
-                <!-- <TakePhotoInscripcion /> -->
-                <!-- <Nose /> -->
-                <!-- <Test /> -->
-                <NavigatorInAdmision/>
-                
-                 
-            <!-- </SplitterPanel> -->
+    <div class="container">
+        <div class="component-section">
+            <h2>Tomar Foto</h2>
+            <CameraCapture />
+        </div>
 
-            <!-- <SplitterPanel :size="50" :minSize="40" class="flex align-items-center justify-content-center">
-                <!-- <PhotoTakedInscripcion /> -->
-            <!-- </SplitterPanel> -->
+        <div class="component-section">
+            <h2>Foto Capturada</h2>
+            <Photo />
+        </div>
 
-            <!-- <UserInformation /> -->
-            
-
-        <!-- </Splitter> -->
+        <div class="component">
+            <!-- <div class="component-section recent-section"> -->
+            <RecentPhotos />
+            <!-- </div> -->
+        </div>
     </div>
 </template>
 
 <script setup>
-
-import NavigatorInAdmision from '../admision/NavigatorInAdmision.vue'
+// import CameraCapture from '@/components/CameraCapture.vue';
+import CameraCapture from '../../components/CameraCapture.vue'
+import RecentPhotos from '../../components/RecentPhotos.vue';
+// import RecentPhotos from '@/components/RecentPhotos.vue';
+import Photo from '../../components/Photo.vue';
 </script>
 
 <style scoped>
-.p-splitter-panel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    max-width: 100vw;
+    width: 100%;
+}
+
+.component-section {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fafafa;
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
 }
 </style>

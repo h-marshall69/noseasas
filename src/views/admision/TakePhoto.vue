@@ -164,9 +164,8 @@ const capturePhoto = () => {
 }
 
 
-onMounted(async () => {
-    await getCameras();
-});
+
+
 
 const uploadPhoto = async () => {
     if (!isValid.value) {
