@@ -1,33 +1,30 @@
 <template>
-    <div class="container">
-        <div class="component-section">
-            <h2>Tomar Foto</h2>
-            <CameraCapture />
+    <div class="container-foto">
+        <div class="component-section-foto">
+            <h3>Tomar Foto</h3>
+            <TakePhoto />
         </div>
 
-        <div class="component-section">
-            <h2>Foto Capturada</h2>
+        <div class="component-section-foto">
+            <h3>Foto Capturada</h3>
             <Photo />
         </div>
 
         <div class="component">
-            <!-- <div class="component-section recent-section"> -->
             <RecentPhotos />
-            <!-- </div> -->
         </div>
     </div>
 </template>
 
 <script setup>
-// import CameraCapture from '@/components/CameraCapture.vue';
-import CameraCapture from '../../components/CameraCapture.vue'
+import TakePhoto from '../../components/TakePhoto.vue'
 import RecentPhotos from '../../components/RecentPhotos.vue';
-// import RecentPhotos from '@/components/RecentPhotos.vue';
 import Photo from '../../components/Photo.vue';
+import Test from '../../components/Test.vue';
 </script>
 
 <style scoped>
-.container {
+.container-foto {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
@@ -35,7 +32,7 @@ import Photo from '../../components/Photo.vue';
     width: 100%;
 }
 
-.component-section {
+.component-section-foto {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 20px;
@@ -43,7 +40,7 @@ import Photo from '../../components/Photo.vue';
 }
 
 @media (max-width: 768px) {
-    .container {
+    .container-foto {
         grid-template-columns: 1fr;
     }
 }

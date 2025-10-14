@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import "./assets/css/estilosPrimeVue.css"
+//import "./assets/css/estilosPrimeVue.css"
 </script>
 
 <template>

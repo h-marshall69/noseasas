@@ -22,7 +22,10 @@
             <Button @click="uploadPhoto" :disabled="!isValidDni || loading" label="Subir Foto" icon="pi pi-upload"
                 class="w-full justify-center p-button-lg" :loading="loading" />
 
-            <Message v-if="error" severity="error" :closable="false">{{ error }}</Message>
+            <Message v-if="error" severity="error" :closable="false" class="error-message">{{ error }}</Message>
+            <Message v-if="successMessage" severity="success" :closable="false" class="success-message">
+                {{ successMessage }}
+            </Message>
         </div>
 
         <div v-else class="text-center">
@@ -37,7 +40,8 @@
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia'
 import { useCameraStore } from '../stores/camera';
-import axios from 'axios';
+import { useAdmisionStore } from '../stores/useAdmisionStore'
+import { PhotoService } from '../services/photoService';
 import { makeFormData } from '../abadeer_truco/utilities/FormDataMaker';
 
 // Importación de componentes de PrimeVue
@@ -49,9 +53,18 @@ import Message from 'primevue/message';
 const dni = ref("");
 const loading = ref(false);
 const error = ref('');
+const successMessage = ref('');
+
+// Store global
+const store = useAdmisionStore()
 const cameraStore = useCameraStore();
 
 const { capturedPhoto } = storeToRefs(cameraStore)
+
+// Variable para almacenar la función de cancelación
+let cancelRequest = null;
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // --- Propiedades Computadas ---
 const isValidDni = computed(() => /^\d{8}$/.test(dni.value));
@@ -65,23 +78,6 @@ function formatDniInput() {
 }
 
 /**
- * Convierte una imagen en formato base64 a un objeto Blob.
- * @param {string} base64String - La imagen en formato base64.
- * @returns {Blob}
- */
-function base64ToBlob(base64String) {
-    const parts = base64String.split(';base64,');
-    const contentType = parts[0].split(':')[1];
-    const raw = window.atob(parts[1]);
-    const rawLength = raw.length;
-    const uInt8Array = new Uint8Array(rawLength);
-    for (let i = 0; i < rawLength; ++i) {
-        uInt8Array[i] = raw.charCodeAt(i);
-    }
-    return new Blob([uInt8Array], { type: contentType });
-}
-
-/**
 * Sube la foto y los datos al servidor.
 */
 async function uploadPhoto() {
@@ -92,16 +88,10 @@ async function uploadPhoto() {
 
     loading.value = true;
     error.value = '';
+    successMessage.value = '';
 
-
+    store.setImageTaken(cameraStore.capturedPhoto)
     try {
-        // const formData = new FormData();
-        // const imageBlob = base64ToBlob(cameraStore.capturedPhoto);
-
-        // formData.append('dni', dni.value);
-        // formData.append('image', imageBlob, `photo_${dni.value}.jpg`);
-        // const codes = ["00000000-0000-0000-0000-000000000000"];
-        // codes.forEach(code => formData.append('codes[]', code));
 
         const formData = makeFormData({
             imageString: cameraStore.capturedPhoto,
@@ -109,15 +99,23 @@ async function uploadPhoto() {
             codes: ["00000000-0000-0000-0000-000000000000"]
         });
 
-        const response = await axios.post("http://localhost:8000/api/tomar_fotos", formData, {
-            headers: { "Content-Type": "multipart/form-data" }
-        });
+        const response = await PhotoService.uploadPhoto(formData);
 
-        console.log("Respuesta del servidor:", response.data);
-        // cameraStore.clearPhoto(); // Limpia la foto de la store
-        // cameraStore.setCapturedPhoto(response.data.imageUrl);
-        cameraStore.setCroppedPhoto(response.data.imageUrl);
-        dni.value = ""; // Limpia el DNI
+        // console.log("Respuesta del servidor:", response);
+        // cameraStore.setCroppedPhoto(response.imageUrl);
+        // console.log(response.data.imageUrl)
+
+        const photoDetails = {
+            dni: dni.value,
+            nombre: response.data.nombreCompleto || "Desconocido",
+            imageUrl: BASE_URL + response.data.imageUrl,
+        };
+
+        cameraStore.setCroppedPhotoUrl(BASE_URL + response.data.imageUrl);
+        cameraStore.setCroppedPhoto(photoDetails);
+
+        successMessage.value = response.data.message;
+        dni.value = "";
 
     } catch (err) {
         console.error("Error al subir la foto:", err);
@@ -156,5 +154,24 @@ async function uploadPhoto() {
     font-size: 64px;
     margin-bottom: 16px;
     opacity: 0.5;
+}
+
+.error-message {
+    background-color: var(--error-bg, #f8d7da);
+    color: var(--error-text, #721c24);
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    margin-top: 1rem;
+    border: 1px solid var(--error-border, #f5c6cb);
+    font-size: 0.875rem;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border: 1px solid #c3e6cb;
 }
 </style>
