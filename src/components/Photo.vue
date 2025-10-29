@@ -6,9 +6,8 @@
         <div>
             <CroppedPhoto />
         </div>
-
-
     </div>
+
 
 </template>
 

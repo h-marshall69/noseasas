@@ -100,18 +100,17 @@ async function uploadPhoto() {
         });
 
         const response = await PhotoService.uploadPhoto(formData);
-
-        // console.log("Respuesta del servidor:", response);
-        // cameraStore.setCroppedPhoto(response.imageUrl);
-        // console.log(response.data.imageUrl)
+        const response_user_data = await PhotoService.getDataUserApiUna(dni.value);
 
         const photoDetails = {
             dni: dni.value,
-            nombre: response.data.nombreCompleto || "Desconocido",
-            imageUrl: BASE_URL + response.data.imageUrl,
+            nombre: response_user_data.nombre,
+            imageUrl: `${BASE_URL}/${response.data.imageUrl}`,
         };
 
-        cameraStore.setCroppedPhotoUrl(BASE_URL + response.data.imageUrl);
+        // cameraStore.setCroppedPhotoUrl(BASE_URL + response.data.imageUrl);
+        cameraStore.setCroppedPhotoUrl(`${BASE_URL}/${response.data.imageUrl}`);
+
         cameraStore.setCroppedPhoto(photoDetails);
 
         successMessage.value = response.data.message;

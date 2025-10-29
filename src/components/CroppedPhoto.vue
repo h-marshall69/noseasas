@@ -20,7 +20,7 @@ import { storeToRefs } from 'pinia'
 import { useCameraStore } from '../stores/camera'
 
 const cameraStore = useCameraStore()
-const { capturedPhoto, croppedPhotoUrl, isLoading, error } = storeToRefs(cameraStore)
+const { croppedPhotoUrl } = storeToRefs(cameraStore)
 
 const fullImageUrl = computed(() => {
     if (croppedPhotoUrl.value) {

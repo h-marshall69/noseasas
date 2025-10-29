@@ -1,21 +1,18 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'     //  <- marshall truco
+import { createPinia } from 'pinia'
+
 import App from './App.vue'
+import router from './router'
+
+import Aura from '@primeuix/themes/aura';
+
 import PrimeVue from 'primevue/config';
-import { setupRouter } from './index'
-// import Aura from '@primeuix/themes/aura';
+
 import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice'
-import Noir from './plugins/Noir.js';
-//import Ripple from 'primevue/ripple';
-//import ConfirmationService from 'primevue/confirmationservice';
-import Tooltip from 'primevue/tooltip';
-import ConfirmationService from 'primevue/confirmationservice';
-import Ripple from 'primevue/ripple';
 
-import 'primeicons/primeicons.css'
-import "./style.css"
-
+// Estilos globales
+// import './style.css'
 const localeEs = {
     startsWith: 'Empieza con',
     contains: 'Contiene',
@@ -66,22 +63,16 @@ const localeEs = {
     passwordPrompt: 'Introduce una contraseña'
 };
 
-async function init() {
-    const router = await setupRouter() // 🧠 esperamos a que se construya dinámicamente
+const app = createApp(App)
 
-    const pinia = createPinia()     //  <- marshall truco
-    const app = createApp(App)
-
-    app.use(router)
-    app.use(pinia)      //  <- marshall truco
-    //app.use(Ripple)
-    app.directive('tooltip', Tooltip)
-    app.use(ToastService)
-    app.use(PrimeVue, {
+app.use(createPinia())
+app.use(router)
+app.use(ToastService)
+app.use(PrimeVue, {
         ripple: true,
         locale: localeEs,
         theme: {
-            preset: Noir,
+            preset: Aura,
             options: {
                 prefix: 'p',
                 darkModeSelector: '.p-dark',
@@ -92,9 +83,5 @@ async function init() {
             }
         }
     })
-    app.directive('ripple', Ripple)
-    app.use(ConfirmationService)
-    app.use(DialogService)
-    app.mount('#app')
-}
-init()
+app.use(DialogService)
+app.mount('#app')
