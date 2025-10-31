@@ -45,6 +45,24 @@
             Probar Detección Facial
           </router-link>
         </div>
+
+        <!-- Nueva tarjeta para el CRUD -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            📂
+          </div>
+          <h3 class="feature-title">Gestión de Fotos</h3>
+          <p class="feature-description">
+            Administra tu galería de fotos: visualiza, edita y elimina
+            imágenes capturadas con nuestra herramienta de gestión.
+          </p>
+          <router-link
+            to="/crud"
+            class="feature-link"
+          >
+            Gestionar Fotos
+          </router-link>
+        </div>
       </div>
     </main>
 
@@ -111,7 +129,7 @@
   background: white;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow:   4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
