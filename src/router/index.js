@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import TakePhoto from '../views/TakePhoto.vue'
 import FaceDetection from '../views/FaceDetection.vue'
 import Crud from '../views/Crud.vue'
+import StudentPortal from '../components/StudentPortal.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/crud',
       name: 'crud-fotos',
       component: Crud
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: StudentPortal
     }
   ],
 })

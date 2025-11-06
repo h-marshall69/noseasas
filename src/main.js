@@ -11,6 +11,18 @@ import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice'
 
+import './style.css'
+
+// import 'primevue/resources/themes/saga-blue/theme.css'   
+// import 'primevue/resources/primevue.min.css'            
+// import 'primeicons/primeicons.css'                     
+
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import Card from 'primevue/card';
+import Message from 'primevue/message';
+import Divider from 'primevue/divider'
+
 // Estilos globales
 // import './style.css'
 const localeEs = {
@@ -77,11 +89,15 @@ app.use(PrimeVue, {
                 prefix: 'p',
                 darkModeSelector: '.p-dark',
                 cssLayer: {
-                    // name: 'primevue',
                     order: 'theme, base, primevue'
                 }
             }
         }
     })
 app.use(DialogService)
+app.component('InputText', InputText);
+app.component('Button', Button);
+app.component('Card', Card);
+app.component('Message', Message);
+app.component('Divider', Divider);
 app.mount('#app')
