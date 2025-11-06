@@ -10,17 +10,17 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #ffffff; /* Fondo blanco en lugar del gradiente */
   min-height: 100vh;
   color: #333;
 }
 
 #app {
   min-height: 100vh;
+  width: 100%; /* Ancho completo */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  flex-direction: column; /* Cambiado para permitir contenido en toda la pantalla */
+  padding: 0; /* Sin padding para vista completa */
 }
 
 /* Utilidades */

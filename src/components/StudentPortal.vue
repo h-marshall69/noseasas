@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <main class="main-content">
       <!-- Search Section -->
       <div class="search-section">
@@ -63,10 +62,17 @@
                 </div>
                 <button
                   @click="handleDownload(searchedStudent)"
-                  class="download-button"
+                  class="download-button primary"
                 >
                   <DownloadIcon />
                   Descargar foto
+                </button>
+                <button
+                  @click="handleViewProfile"
+                  class="download-button secondary"
+                >
+                  <UserIcon />
+                  Ver perfil completo
                 </button>
               </div>
 
@@ -116,6 +122,25 @@
                     Podrás recoger tu carnet en la oficina administrativa según el calendario establecido.
                   </p>
                 </div>
+
+                <!-- Additional Options -->
+                <div class="additional-options">
+                  <h4>Opciones adicionales</h4>
+                  <div class="options-grid">
+                    <button @click="handleScheduleAppointment" class="option-button">
+                      <CalendarIcon />
+                      Programar cita de recogida
+                    </button>
+                    <button @click="handleViewCalendar" class="option-button">
+                      <CalendarIcon />
+                      Ver calendario de recogidas
+                    </button>
+                    <button @click="handleContactSupport" class="option-button">
+                      <MessageCircleIcon />
+                      Contactar soporte
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -131,6 +156,20 @@
             <p class="error-help">
               Verifica que el número de matrícula sea correcto o contacta con la administración.
             </p>
+            <!-- Options for not found -->
+            <div class="additional-options">
+              <h4>¿Qué puedes hacer?</h4>
+              <div class="options-grid">
+                <button @click="handleUploadPhoto" class="option-button primary">
+                  <UploadIcon />
+                  Subir foto de carnet
+                </button>
+                <button @click="handleContactSupport" class="option-button">
+                  <MessageCircleIcon />
+                  Solicitar ayuda
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -169,6 +208,42 @@
             <h3>Descarga tu foto</h3>
             <p>
               Descarga una copia de tu foto de carnet
+            </p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-content">
+            <div class="card-icon">
+              <CalendarIcon />
+            </div>
+            <h3>Programa tu cita</h3>
+            <p>
+              Agenda la recogida de tu carnet universitario
+            </p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-content">
+            <div class="card-icon">
+              <UploadIcon />
+            </div>
+            <h3>Sube tu foto</h3>
+            <p>
+              Registra tu foto si aún no lo has hecho
+            </p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-content">
+            <div class="card-icon">
+              <MessageCircleIcon />
+            </div>
+            <h3>Obtén ayuda</h3>
+            <p>
+              Contacta con el equipo de soporte para cualquier duda
             </p>
           </div>
         </div>
@@ -222,6 +297,18 @@ const ClockIcon = {
   template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
 };
 
+const CalendarIcon = {
+  template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>'
+};
+
+const MessageCircleIcon = {
+  template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>'
+};
+
+const UploadIcon = {
+  template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>'
+};
+
 export default {
   name: 'StudentPortal',
   components: {
@@ -232,7 +319,10 @@ export default {
     UserIcon,
     GraduationCapIcon,
     HashIcon,
-    ClockIcon
+    ClockIcon,
+    CalendarIcon,
+    MessageCircleIcon,
+    UploadIcon
   },
   props: {
     images: {
@@ -264,6 +354,31 @@ export default {
       document.body.removeChild(link);
     };
 
+    const handleViewProfile = () => {
+      // Implementar navegación o modal para perfil completo
+      alert('Navegando al perfil completo del estudiante');
+    };
+
+    const handleScheduleAppointment = () => {
+      // Implementar programación de cita
+      alert('Abriendo formulario de programación de cita');
+    };
+
+    const handleViewCalendar = () => {
+      // Implementar vista de calendario
+      alert('Mostrando calendario de recogidas');
+    };
+
+    const handleContactSupport = () => {
+      // Implementar contacto con soporte
+      alert('Abriendo chat o formulario de soporte');
+    };
+
+    const handleUploadPhoto = () => {
+      // Implementar subida de foto
+      alert('Abriendo formulario para subir foto');
+    };
+
     const handleImageError = (e) => {
       const target = e.target;
       target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext fill="%23999" x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle"%3EImagen no disponible%3C/text%3E%3C/svg%3E';
@@ -275,6 +390,11 @@ export default {
       hasSearched,
       handleSearch,
       handleDownload,
+      handleViewProfile,
+      handleScheduleAppointment,
+      handleViewCalendar,
+      handleContactSupport,
+      handleUploadPhoto,
       handleImageError
     };
   }
@@ -288,42 +408,11 @@ export default {
   font-family: Arial, sans-serif;
 }
 
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.logo {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border-radius: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo span {
-  color: white;
-  font-size: 1.25rem;
-}
-
-.title-section h1 {
-  font-size: 1.25rem;
-  margin: 0;
-}
-
-.title-section p {
-  font-size: 0.875rem;
-  color: #666;
-  margin: 0;
-}
-
 .main-content {
-  max-width: 800px;
+  max-width: none; /* Expandir a ancho completo */
   margin: 0 auto;
-  padding: 3rem 1rem;
+  padding: 3rem 2rem; /* Aumentar padding lateral para mejor uso de pantalla */
+  width: 100%;
 }
 
 .search-section {
@@ -332,64 +421,69 @@ export default {
   background: white;
   border-radius: 0.5rem;
   border: 1px solid #ddd;
+  max-width: 100%;
 }
 
 .search-content {
-  padding: 2rem;
+  padding: 3rem; /* Aumentar padding para más espacio */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .search-header {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem; /* Más espacio */
 }
 
 .search-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 4rem;
-  height: 4rem;
+  width: 5rem; /* Aumentar tamaño del icono */
+  height: 5rem;
   border-radius: 50%;
   background: #dbeafe;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .search-icon svg {
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   color: #2563eb;
 }
 
 .search-header h2 {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 2rem; /* Aumentar tamaño de fuente */
   font-weight: 600;
 }
 
 .search-header p {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #666;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .search-form {
-  max-width: 28rem;
+  max-width: 32rem; /* Un poco más ancho */
   margin: 0 auto;
 }
 
 .input-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .input-group label {
   display: block;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .search-input {
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem; /* Más padding */
   border: 1px solid #ccc;
   border-radius: 0.375rem;
   font-size: 1rem;
@@ -398,21 +492,23 @@ export default {
 .search-input:focus {
   outline: none;
   border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .search-button {
   width: 100%;
   background: #2563eb;
   color: white;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.5rem;
   border: none;
   border-radius: 0.375rem;
-  font-size: 1rem;
+  font-size: 1.125rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  transition: background 0.2s;
 }
 
 .search-button:hover {
@@ -420,8 +516,8 @@ export default {
 }
 
 .search-button svg {
-  width: 1rem;
-  height: 1rem;
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .results-section {
@@ -429,22 +525,26 @@ export default {
   background: white;
   border-radius: 0.5rem;
   border: 1px solid #ddd;
+  margin-bottom: 2rem;
+  max-width: 100%;
 }
 
 .results-content {
-  padding: 2rem;
+  padding: 3rem; /* Más padding */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .status-header {
   text-align: center;
-  padding-bottom: 1.5rem;
+  padding-bottom: 2rem;
   border-bottom: 1px solid #ddd;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .status-header h3 {
   margin-bottom: 1rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
@@ -455,7 +555,7 @@ export default {
   background: #059669;
   color: white;
   font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 9999px;
 }
 
@@ -467,18 +567,19 @@ export default {
 .student-details {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 3rem; /* Más gap */
 }
 
 @media (min-width: 768px) {
   .student-details {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1.5fr; /* Ajustar proporciones para más espacio en info */
   }
 }
 
 .image-section {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
 .image-container {
@@ -487,6 +588,8 @@ export default {
   border-radius: 0.5rem;
   overflow: hidden;
   aspect-ratio: 3/4;
+  max-width: 300px; /* Limitar ancho de imagen para mejor escalado */
+  margin: 0 auto;
 }
 
 .student-image {
@@ -497,20 +600,37 @@ export default {
 
 .download-button {
   width: 100%;
-  margin-top: 1rem;
-  border: 1px solid #ccc;
-  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
   border-radius: 0.375rem;
-  background: white;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+  border: 1px solid #ccc;
 }
 
-.download-button:hover {
-  background: #f9fafb;
+.download-button.primary {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.download-button.primary:hover {
+  background: #1d4ed8;
+}
+
+.download-button.secondary {
+  background: white;
+  color: #2563eb;
+}
+
+.download-button.secondary:hover {
+  background: #f0f9ff;
+  border-color: #2563eb;
 }
 
 .download-button svg {
@@ -521,32 +641,33 @@ export default {
 .info-section {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .personal-info h3 {
-  margin-bottom: 1rem;
-  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
 }
 
 .info-grid {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .info-item {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .info-item svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   color: #666;
   margin-top: 0.125rem;
+  flex-shrink: 0;
 }
 
 .info-label {
@@ -558,69 +679,139 @@ export default {
 .info-value {
   font-weight: 500;
   margin: 0;
+  font-size: 1rem;
 }
 
 .info-message {
   background: #dbeafe;
   border: 1px solid #93c5fd;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 .info-message p {
   font-size: 0.875rem;
   color: #1e40af;
   margin: 0;
+  line-height: 1.5;
+}
+
+.additional-options {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #ddd;
+}
+
+.additional-options h4 {
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .options-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.option-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.option-button.primary {
+  background: #dbeafe;
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.option-button:hover {
+  background: #f9fafb;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.option-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .student-not-found {
   text-align: center;
-  padding: 2rem 0;
+  padding: 3rem 0; /* Más padding */
 }
 
 .error-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 4rem;
-  height: 4rem;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%;
   background: #fee2e2;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .error-icon svg {
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   color: #dc2626;
 }
 
 .student-not-found h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
 .error-message {
   color: #666;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
 }
 
 .error-help {
   font-size: 0.875rem;
   color: #666;
+  margin-bottom: 2rem;
 }
 
 .info-cards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (min-width: 640px) {
   .info-cards {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    .info-cards {
+      grid-template-columns: repeat(6, 1fr); /* Expandir a 6 columnas para más opciones */
+    }
   }
 }
 
@@ -628,10 +819,16 @@ export default {
   background: white;
   border-radius: 0.5rem;
   border: 1px solid #ddd;
+  transition: transform 0.2s;
+}
+
+.info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .card-content {
-  padding: 1.5rem;
+  padding: 2rem 1.5rem; /* Más padding */
   text-align: center;
 }
 
@@ -639,15 +836,16 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3rem;
-  height: 3rem;
+  width: 4rem; /* Aumentar tamaño */
+  height: 4rem;
   border-radius: 50%;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  margin: 0 auto 1rem;
 }
 
 .card-icon svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 .info-card:nth-child(1) .card-icon {
@@ -674,34 +872,60 @@ export default {
   color: #9333ea;
 }
 
+.info-card:nth-child(4) .card-icon {
+  background: #fef3c7;
+}
+
+.info-card:nth-child(4) .card-icon svg {
+  color: #d97706;
+}
+
+.info-card:nth-child(5) .card-icon {
+  background: #fed7d7;
+}
+
+.info-card:nth-child(5) .card-icon svg {
+  color: #ef4444;
+}
+
+.info-card:nth-child(6) .card-icon {
+  background: #e0e7ff;
+}
+
+.info-card:nth-child(6) .card-icon svg {
+  color: #6366f1;
+}
+
 .info-card h3 {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .info-card p {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: #666;
   margin: 0;
+  line-height: 1.4;
 }
 
 .footer {
   margin-top: 4rem;
-  padding: 2rem 0;
+  padding: 3rem 0;
   border-top: 1px solid #ddd;
   background: white;
+  max-width: 100%;
 }
 
 .footer-content {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 2rem;
   text-align: center;
 }
 
 .footer p {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #666;
   margin: 0;
 }

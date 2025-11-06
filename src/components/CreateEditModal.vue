@@ -125,9 +125,9 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { Upload, X } from 'lucide-vue-next';
+// import { Upload, X } from 'lucide-vue-next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from './ui/dialog';
-import { Button } from './ui/button';
+import { Button } from './ui/button.vue';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
